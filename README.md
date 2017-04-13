@@ -14,16 +14,18 @@ This codes strives to use:
 2. Pure functions
 3. Immutable structures
 
-##### Installing
+#### Running
+
+To run the software you need to install [SBT](http://www.scala-sbt.org/release/docs/Setup.html) then just type at your shell:
 
 ```shell
 $ sbt run
 enter command:
 ```
 
-##### Test
+#### Testing
 
-To run tests
+To run tests execute on your shell:
 
 ```shell
 $ sbt test
