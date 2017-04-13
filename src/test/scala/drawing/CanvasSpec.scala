@@ -57,15 +57,7 @@ class CanvasSpec extends FlatSpec with Matchers {
   }
 
   it should "not draw a diagonal line" in {
-    Canvas(20, 4).line(1, 2, 3, 4).render shouldBe
-      """
-        #+--------------------+
-        #|                    |
-        #|                    |
-        #|                    |
-        #|                    |
-        #+--------------------+
-      """.stripMargin('#').trim()
+    an [IllegalArgumentException] should be thrownBy Canvas(20, 4).line(1, 2, 3, 4)
   }
 
   ".rect" should "draw a rectangle" in {

@@ -69,7 +69,7 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     val dy = (y1 to y2)
 
     if (dx.length > 1 && dy.length > 1) {
-      throw new IllegalArgumentException("Not implemented")
+      throw new IllegalArgumentException
     }
 
     val coords = dx.flatMap(x => dy.map(y => (x,y)))
