@@ -1,45 +1,49 @@
 import scala.io.StdIn
+import scala.util.{Try, Success, Failure}
 
 object Main extends App {
-  val q = "Q".r
-  val c = "C (\\d+) (\\d+)".r
-  val l = "L (\\d+) (\\d+) (\\d+) (\\d+)".r
-  val r = "R (\\d+) (\\d+) (\\d+) (\\d+)".r
-  val b = "B (\\d+) (\\d+) (\\w)".r
+  val q = """Q""".r
+  val c = """C (\d+) (\d+)""".r
+  val l = """L (\d+) (\d+) (\d+) (\d+)""".r
+  val r = """R (\d+) (\d+) (\d+) (\d+)""".r
+  val b = """B (\d+) (\d+) (\w)""".r
 
-  def checkCanvas(canvas: Option[Canvas]): Option[Canvas] = {
-    if (canvas.isEmpty) {
-      println("Please, create a canvas before drawing")
-    }
-    canvas
-  }
-
+  /**
+    * Recursively request a command and applies to the canvas
+    * @param canvas the current canvas
+    */
   def run(canvas: Option[Canvas]): Unit = {
     // Render the canvas if there is any
     canvas.foreach(c => println(c.render))
 
     val input = StdIn.readLine("enter command: ")
-    input match {
-      case q() =>
-        println("Bye, bye")
-      case c(width, height) =>
-        val output = Canvas(width.toInt, height.toInt)
-        run(Some(output))
-      case l(x1, y1, x2, y2) =>
-        val output = checkCanvas(canvas)
-          .map(_.line(x1.toInt - 1, y1.toInt - 1, x2.toInt - 1, y2.toInt - 1))
-        run(output)
-      case r(x1, y1, x2, y2) =>
-        val output = checkCanvas(canvas)
-          .map(_.rect(x1.toInt - 1, y1.toInt - 1, x2.toInt - 1, y2.toInt - 1))
-        run(output)
-      case b(x, y, color) =>
-        val output = checkCanvas(canvas)
-          .map(_.bucket(x.toInt - 1, y.toInt - 1, color.charAt(0)))
-        run(output)
-      case _ =>
+    val command = input match {
+      case q() => QuitCmd()
+      case c(width, height) => CanvasCmd(width.toInt, height.toInt)
+      case l(x1, y1, x2, y2) => LineCmd(x1.toInt - 1, y1.toInt - 1, x2.toInt - 1, y2.toInt - 1)
+      case r(x1, y1, x2, y2) => RectCmd(x1.toInt - 1, y1.toInt - 1, x2.toInt - 1, y2.toInt - 1)
+      case b(x, y, color) => BucketCmd(x.toInt - 1, y.toInt - 1, color.charAt(0))
+      case _ => InvalidCmd()
+    }
+    command match {
+      case cmd: DrawCmd =>
+        Try {
+          if (cmd.requireCanvas && canvas.isEmpty) {
+            println("Please, create a canvas before drawing")
+          }
+          cmd.draw(canvas)
+        } match {
+          case Success(d) =>
+            run(d)
+          case Failure(_) =>
+            println("Invalid input")
+            run(canvas)
+        }
+      case _: InvalidCmd =>
         println("Invalid command")
         run(canvas)
+      case _: QuitCmd =>
+        println("Bye, bye")
     }
   }
 
