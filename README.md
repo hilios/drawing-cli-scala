@@ -1,6 +1,6 @@
 # Springer Challenge
 
-#### A simple drawing application
+### A simple drawing application
 
 A command line application that let's you draw simple stuff like lines and rectangles.
 
