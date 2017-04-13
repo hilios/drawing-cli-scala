@@ -95,7 +95,8 @@ case class Canvas(width: Int, height: Int, drawing: String) {
   }
 
   /**
-    * Fills some area constrained by the edges and lines of the canvas using a flood-fill algorithm
+    * Fills blank areas of the canvas constrained by the edges and lines using a flood-fill
+    * algorithm
     * @param x the x coordinate
     * @param y the y coordinate
     * @param color the filler character

@@ -1,6 +1,9 @@
 import scala.io.StdIn
 import scala.util.{Try, Success, Failure}
 
+/**
+  * The application entrypoint
+  */
 object Main extends App {
   val q = """Q""".r
   val c = """C (\d+) (\d+)""".r

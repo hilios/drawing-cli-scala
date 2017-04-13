@@ -9,3 +9,5 @@ libraryDependencies ++= Seq(
 )
 
 logBuffered in Test := false
+
+mainClass := Some("Main")
