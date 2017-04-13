@@ -1,5 +1,7 @@
 # Springer Challenge
 
+[![Build Status](https://travis-ci.org/hilios/springer-challenge-scala.svg?branch=master)](https://travis-ci.org/hilios/springer-challenge-scala)
+
 ### A simple drawing application
 
 A command line application that let's you draw simple stuff like lines and rectangles.
