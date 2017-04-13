@@ -1,4 +1,3 @@
-import drawing.Draw
 import org.scalatest.{FlatSpec, Matchers}
 
 class CanvasSpec extends FlatSpec with Matchers {
@@ -12,5 +11,32 @@ class CanvasSpec extends FlatSpec with Matchers {
 
   ".fill" should "return a new canvas with the given coordinate filled" in {
     Canvas(3, 3).fill(1, 1, "x").drawing shouldBe "    x    "
+  }
+
+  ".render" should "return a bordered canvas with the drawing" in {
+    Canvas(20, 4).render shouldBe
+      """
+        #+--------------------+
+        #|                    |
+        #|                    |
+        #|                    |
+        #|                    |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
+  ".line" should "draw a line into the canvas" in {
+    val c = Canvas(20, 4).line(0, 1, 5, 1)
+    println(c.render)
+
+    c.render shouldBe
+      """
+        #+--------------------+
+        #|                    |
+        #|xxxxxx              |
+        #|                    |
+        #|                    |
+        #+--------------------+
+      """.stripMargin('#').trim()
   }
 }
