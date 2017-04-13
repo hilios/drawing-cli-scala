@@ -1,7 +1,11 @@
 
 
 case class Canvas(width: Int, height: Int, drawing: String) {
-  private def index(x: Int, y: Int) = x + y * width
+  private def index(x: Int, y: Int) = {
+    val _x = Seq(x).map(x => if(x < 0) 0 else x).map(x => if(x < width) x else width - 1)
+    val _y = Seq(y).map(y => if(y < 0) 0 else y).map(y => if(y < height) y else height - 1)
+    _x.head + _y.head * width
+  }
 
   def fill(x: Int, y: Int, filler: Char): Canvas = {
     val i = index(x, y)
@@ -21,7 +25,9 @@ case class Canvas(width: Int, height: Int, drawing: String) {
 
   // TODO: Not allow diagonal curves
   def line(x1: Int, y1: Int, x2: Int, y2: Int): Canvas = {
-    val coords = (x1 to x2).flatMap(x => (y1 to y2).map(y => (x,y)))
+    val dx = (x1 to x2)
+    val dy = (y1 to y2)
+    val coords = dx.flatMap(x => dy.map(y => (x,y))).dropWhile(_ => dx.length > 1 && dy.length > 1)
     coords.foldLeft(this)((canvas, xy) => canvas.fill(xy, Canvas.LINE_CHAR))
   }
 

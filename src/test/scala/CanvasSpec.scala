@@ -13,6 +13,11 @@ class CanvasSpec extends FlatSpec with Matchers {
     Canvas(3, 3).fill(1, 1, 'x').drawing shouldBe "    x    "
   }
 
+  it should "constraint to the canvas boundaries" in {
+    Canvas(3, 3).fill(-1, -1, 'x').drawing shouldBe "x        "
+    Canvas(3, 3).fill(10, 10, 'x').drawing shouldBe "        x"
+  }
+
   ".render" should "return a bordered canvas with the drawing" in {
     Canvas(20, 4).render shouldBe
       """
@@ -45,6 +50,18 @@ class CanvasSpec extends FlatSpec with Matchers {
         #|                    |
         #|     x              |
         #|     x              |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
+  it should "not draw a diagonal line" in {
+    Canvas(20, 4).line(1, 2, 3, 4).render shouldBe
+      """
+        #+--------------------+
+        #|                    |
+        #|                    |
+        #|                    |
+        #|                    |
         #+--------------------+
       """.stripMargin('#').trim()
   }
