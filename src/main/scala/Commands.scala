@@ -4,6 +4,11 @@
 trait DrawCmd {
   val requireCanvas = false
 
+  /**
+    * Draws something to the canvas and return it.
+    * @param canvas the current canvas
+    * @return the new canvas
+    */
   def draw(canvas: Option[Canvas]): Option[Canvas] = ???
 }
 
@@ -25,10 +30,10 @@ case class CanvasCmd(width: Int, height: Int) extends DrawCmd {
 
 /**
   * Draws a line to the canvas
-  * @param x1 the first point x coordinate
-  * @param y1 the first point y coordinate
-  * @param x2 the last point x coordinate
-  * @param y2 the last point y coordinate
+  * @param x1 the stating point x coordinate
+  * @param y1 the stating point y coordinate
+  * @param x2 the ending point x coordinate
+  * @param y2 the ending point y coordinate
   */
 case class LineCmd(x1: Int, y1: Int, x2: Int, y2: Int) extends DrawCmd with RequireCanvas {
   override def draw(canvas: Option[Canvas]) = canvas.map(_.line(x1, y1, x2, y2))

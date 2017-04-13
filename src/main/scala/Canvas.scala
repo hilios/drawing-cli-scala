@@ -1,19 +1,35 @@
-
-
+/**
+  * A 2D drawing canvas.
+  * @param width the canvas width
+  * @param height the canvas height
+  * @param drawing the current canvas drawing
+  */
 case class Canvas(width: Int, height: Int, drawing: String) {
+
+  /**
+    * Return the given coordinate constrained to the canvas boundaries.
+    * @param coord the axes coordinate
+    * @param max the boundary
+    * @return the sanitized coordinate
+    */
+  private def boundaries(coord: Int, max: Int) = {
+    if(coord < 0) 0 else if (coord < width) coord else max - 1
+  }
+
+  /**
+    * Returns the linear index from an 2D coordinate
+    * @param x the x coordinate
+    * @param y the y coordinate
+    * @return the linear index
+    */
   private def index(x: Int, y: Int) = {
-    val _x = Seq(x).map(x => if(x < 0) 0 else x).map(x => if(x < width) x else width - 1)
-    val _y = Seq(y).map(y => if(y < 0) 0 else y).map(y => if(y < height) y else height - 1)
-    _x.head + _y.head * width
+    boundaries(x, width) + boundaries(y, height) * width
   }
 
-  def fill(x: Int, y: Int, filler: Char): Canvas = {
-    val i = index(x, y)
-    Canvas(width, height, drawing.substring(0, i) ++ filler.toString ++ drawing.substring(i + 1))
-  }
-
-  def fill(xy: (Int, Int), filler: Char): Canvas = fill(xy._1, xy._2, filler)
-
+  /**
+    * Returns a optimized for humans version of the drawing.
+    * @return the drawing
+    */
   def render: String = {
     val border = s"+${"-" * width}+"
     val lines = (0 to height - 1)
@@ -23,16 +39,51 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     s"$border\n$lines\n$border"
   }
 
-  // TODO: Not allow diagonal curves
+  /**
+    * Return a new canvas with the given coordinate filled with the filler parameter
+    * @param x the x coordinate
+    * @param y the y coordinate
+    * @param filler the filler character
+    * @return a canvas with a new drawing
+    */
+  def fill(x: Int, y: Int, filler: Char): Canvas = {
+    val i = index(x, y)
+    Canvas(width, height, drawing.substring(0, i) ++ filler.toString ++ drawing.substring(i + 1))
+  }
+
+  def fill(xy: (Int, Int), filler: Char): Canvas = fill(xy._1, xy._2, filler)
+
+  /**
+    * Draws horizontals and vertical lines to the canvas. Throws an exception if one tries to draw a
+    * diagonal line
+    * @param x1 the stating point x coordinate
+    * @param y1 the stating point y coordinate
+    * @param x2 the ending point x coordinate
+    * @param y2 the ending point y coordinate
+    * @return a canvas with a line drawn
+    */
   def line(x1: Int, y1: Int, x2: Int, y2: Int): Canvas = {
     val dx = (x1 to x2)
     val dy = (y1 to y2)
-    val coords = dx.flatMap(x => dy.map(y => (x,y))).dropWhile(_ => dx.length > 1 && dy.length > 1)
+
+    if (dx.length > 1 && dy.length > 1) {
+      throw new IllegalArgumentException("Not implemented")
+    }
+
+    val coords = dx.flatMap(x => dy.map(y => (x,y)))
     coords.foldLeft(this)((canvas, xy) => canvas.fill(xy, Canvas.LINE_CHAR))
   }
 
   def line(xyxy: (Int, Int, Int, Int)): Canvas = line(xyxy._1, xyxy._2, xyxy._3, xyxy._4)
 
+  /**
+    * Draws a rectangle
+    * @param x1 the first edge x coordinate
+    * @param y1 the first edge y coordinate
+    * @param x2 the last edge x coordinate
+    * @param y2 the last edge y coordinate
+    * @return a canvas with a rectangle drawn
+    */
   def rect(x1: Int, y1: Int, x2: Int, y2: Int): Canvas = {
     val coords = Seq(
       (x1, y1, x2, y1),
@@ -43,6 +94,13 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     coords.foldLeft(this)((canvas, xyxy) => canvas.line(xyxy))
   }
 
+  /**
+    * Fills some area constrained by the edges and lines of the canvas using a flood-fill algorithm
+    * @param x the x coordinate
+    * @param y the y coordinate
+    * @param color the filler character
+    * @return a canvas with a some area filled
+    */
   def bucket(x: Int, y: Int, color: Char): Canvas = {
     val i = index(x, y)
     if(drawing.charAt(i) == Canvas.BLANK_CHAR) {
@@ -67,5 +125,12 @@ object Canvas {
   val BLANK_CHAR = ' '
   val LINE_CHAR = 'x'
 
-  def apply(width: Int, height: Int) = new Canvas(width, height, BLANK_CHAR.toString * (width * height))
+  /**
+    * Returns a new blank canvas
+    * @param width the canvas width
+    * @param height the canvas height
+    * @return the new canvas
+    */
+  def apply(width: Int, height: Int) = new Canvas(width, height,
+    BLANK_CHAR.toString * (width * height))
 }
