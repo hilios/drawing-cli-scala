@@ -60,4 +60,39 @@ class CanvasSpec extends FlatSpec with Matchers {
         #+--------------------+
       """.stripMargin('#').trim()
   }
+
+  ".bucket" should "fill some area" in {
+    Canvas(20, 4)
+      .line(0, 1, 5, 1)
+      .line(5, 2, 5, 3)
+      .rect(15, 0, 19, 2)
+      .bucket(9, 2, "o")
+      .render shouldBe
+      """
+        #+--------------------+
+        #|oooooooooooooooxxxxx|
+        #|xxxxxxooooooooox   x|
+        #|     xoooooooooxxxxx|
+        #|     xoooooooooooooo|
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
+  it should "fill random rectangles" in {
+    Canvas(20, 4)
+      .line(0, 1, 5, 1)
+      .line(5, 2, 5, 3)
+      .rect(15, 0, 19, 2)
+      .bucket(0, 3, "*")
+      .bucket(17, 1, "@")
+      .render shouldBe
+      """
+        #+--------------------+
+        #|               xxxxx|
+        #|xxxxxx         x@@@x|
+        #|*****x         xxxxx|
+        #|*****x              |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
 }

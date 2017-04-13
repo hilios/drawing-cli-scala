@@ -1,10 +1,10 @@
 
 
 case class Canvas(width: Int, height: Int, drawing: String) {
-  private def toIndex(x: Int, y: Int) = x + y * width
+  private def index(x: Int, y: Int) = x + y * width
 
   def fill(x: Int, y: Int, filler: String): Canvas = {
-    val i = toIndex(x, y)
+    val i = index(x, y)
     Canvas(width, height, drawing.substring(0, i) ++ filler ++ drawing.substring(i + 1))
   }
 
@@ -36,6 +36,25 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     )
     coords.foldLeft(this)((canvas, xyxy) => canvas.line(xyxy))
   }
+
+  def bucket(x: Int, y: Int, color: String): Canvas = {
+    val i = index(x, y)
+    if(drawing.charAt(i).toString == " ") {
+      val coords = Seq(
+        (x, y - 1),
+        (x + 1, y),
+        (x, y + 1),
+        (x - 1, y)
+      )
+      coords
+        .filter(xy => xy._1 >= 0 && xy._1 < width && xy._2 >= 0 && xy._2 < height)
+        .foldLeft(fill(x, y, color))((canvas, xy) => canvas.bucket(xy, color))
+    } else {
+      this
+    }
+  }
+
+  def bucket(xy: (Int, Int), color: String): Canvas = bucket(xy._1, xy._2, color)
 }
 
 object Canvas {
