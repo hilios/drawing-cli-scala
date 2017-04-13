@@ -1,3 +1,5 @@
+package drawing
+
 /**
   * Defines a command that draws something to the canvas.
   */

@@ -1,3 +1,5 @@
+package drawing
+
 import org.scalatest.{FlatSpec, Matchers}
 
 class CanvasSpec extends FlatSpec with Matchers {

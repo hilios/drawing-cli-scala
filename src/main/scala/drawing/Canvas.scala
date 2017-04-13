@@ -1,3 +1,5 @@
+package drawing
+
 /**
   * A 2D drawing canvas.
   * @param width the canvas width

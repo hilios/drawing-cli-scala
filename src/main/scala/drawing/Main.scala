@@ -1,5 +1,7 @@
+package drawing
+
 import scala.io.StdIn
-import scala.util.{Try, Success, Failure}
+import scala.util.{Failure, Success, Try}
 
 /**
   * The application entrypoint
