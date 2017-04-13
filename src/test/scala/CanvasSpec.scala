@@ -25,16 +25,37 @@ class CanvasSpec extends FlatSpec with Matchers {
       """.stripMargin('#').trim()
   }
 
-  ".line" should "draw a line into the canvas" in {
-    val c = Canvas(20, 4).line(0, 1, 5, 1)
-    println(c.render)
-
-    c.render shouldBe
+  ".line" should "draw a horizontal line into the canvas" in {
+    Canvas(20, 4).line(0, 1, 5, 1).render shouldBe
       """
         #+--------------------+
         #|                    |
         #|xxxxxx              |
         #|                    |
+        #|                    |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
+  it should "draw a vertical line into the canvas" in {
+    Canvas(20, 4).line(5, 2, 5, 3).render shouldBe
+      """
+        #+--------------------+
+        #|                    |
+        #|                    |
+        #|     x              |
+        #|     x              |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
+  ".rect" should "draw a rectangle" in {
+    Canvas(20, 4).rect(15, 0, 19, 2).render shouldBe
+      """
+        #+--------------------+
+        #|               xxxxx|
+        #|               x   x|
+        #|               xxxxx|
         #|                    |
         #+--------------------+
       """.stripMargin('#').trim()
