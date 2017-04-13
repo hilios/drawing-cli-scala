@@ -3,12 +3,12 @@
 case class Canvas(width: Int, height: Int, drawing: String) {
   private def index(x: Int, y: Int) = x + y * width
 
-  def fill(x: Int, y: Int, filler: String): Canvas = {
+  def fill(x: Int, y: Int, filler: Char): Canvas = {
     val i = index(x, y)
-    Canvas(width, height, drawing.substring(0, i) ++ filler ++ drawing.substring(i + 1))
+    Canvas(width, height, drawing.substring(0, i) ++ filler.toString ++ drawing.substring(i + 1))
   }
 
-  def fill(xy: (Int, Int), filler: String): Canvas = fill(xy._1, xy._2, filler)
+  def fill(xy: (Int, Int), filler: Char): Canvas = fill(xy._1, xy._2, filler)
 
   def render: String = {
     val border = s"+${"-" * width}+"
@@ -37,9 +37,9 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     coords.foldLeft(this)((canvas, xyxy) => canvas.line(xyxy))
   }
 
-  def bucket(x: Int, y: Int, color: String): Canvas = {
+  def bucket(x: Int, y: Int, color: Char): Canvas = {
     val i = index(x, y)
-    if(drawing.charAt(i).toString == " ") {
+    if(drawing.charAt(i) == Canvas.BLANK_CHAR) {
       val coords = Seq(
         (x, y - 1),
         (x + 1, y),
@@ -54,12 +54,12 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     }
   }
 
-  def bucket(xy: (Int, Int), color: String): Canvas = bucket(xy._1, xy._2, color)
+  def bucket(xy: (Int, Int), color: Char): Canvas = bucket(xy._1, xy._2, color)
 }
 
 object Canvas {
-  val LINE_CHAR = "x"
-  val BLANK_CHAR = " "
+  val BLANK_CHAR = ' '
+  val LINE_CHAR = 'x'
 
-  def apply(width: Int, height: Int) = new Canvas(width, height, BLANK_CHAR * (width * height))
+  def apply(width: Int, height: Int) = new Canvas(width, height, BLANK_CHAR.toString * (width * height))
 }

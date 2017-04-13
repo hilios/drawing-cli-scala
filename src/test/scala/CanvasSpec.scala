@@ -10,7 +10,7 @@ class CanvasSpec extends FlatSpec with Matchers {
   }
 
   ".fill" should "return a new canvas with the given coordinate filled" in {
-    Canvas(3, 3).fill(1, 1, "x").drawing shouldBe "    x    "
+    Canvas(3, 3).fill(1, 1, 'x').drawing shouldBe "    x    "
   }
 
   ".render" should "return a bordered canvas with the drawing" in {
@@ -66,7 +66,7 @@ class CanvasSpec extends FlatSpec with Matchers {
       .line(0, 1, 5, 1)
       .line(5, 2, 5, 3)
       .rect(15, 0, 19, 2)
-      .bucket(9, 2, "o")
+      .bucket(9, 2, 'o')
       .render shouldBe
       """
         #+--------------------+
@@ -83,8 +83,8 @@ class CanvasSpec extends FlatSpec with Matchers {
       .line(0, 1, 5, 1)
       .line(5, 2, 5, 3)
       .rect(15, 0, 19, 2)
-      .bucket(0, 3, "*")
-      .bucket(17, 1, "@")
+      .bucket(0, 3, '*')
+      .bucket(17, 1, '@')
       .render shouldBe
       """
         #+--------------------+
