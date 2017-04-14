@@ -16,7 +16,7 @@ object Main extends App {
   @tailrec
   def run(canvas: Option[Canvas]): Unit = {
     // Render the canvas if there is any
-    canvas.foreach(c => println(c.render))
+    canvas.foreach(c => println(s"\n${c.render}\n"))
 
     val input = StdIn.readLine("enter command: ")
     Command.parse(input) match {
