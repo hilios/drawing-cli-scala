@@ -56,12 +56,46 @@ class CanvasSpec extends FlatSpec with Matchers {
       """.stripMargin('#').trim()
   }
 
+  it should "draw correctly even if points are inverted" in {
+    Canvas(20, 4).line(5, 1, 0, 1).render shouldBe
+      """
+        #+--------------------+
+        #|                    |
+        #|xxxxxx              |
+        #|                    |
+        #|                    |
+        #+--------------------+
+      """.stripMargin('#').trim()
+
+    Canvas(20, 4).line(5, 3, 5, 2).render shouldBe
+      """
+        #+--------------------+
+        #|                    |
+        #|                    |
+        #|     x              |
+        #|     x              |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
   it should "not draw a diagonal line" in {
     an [IllegalArgumentException] should be thrownBy Canvas(20, 4).line(1, 2, 3, 4)
   }
 
   ".rect" should "draw a rectangle" in {
     Canvas(20, 4).rect(15, 0, 19, 2).render shouldBe
+      """
+        #+--------------------+
+        #|               xxxxx|
+        #|               x   x|
+        #|               xxxxx|
+        #|                    |
+        #+--------------------+
+      """.stripMargin('#').trim()
+  }
+
+  it  should "draw the same rectangle even if points are inverted" in {
+    Canvas(20, 4).rect(19, 2, 15, 0).render shouldBe
       """
         #+--------------------+
         #|               xxxxx|

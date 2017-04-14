@@ -65,14 +65,14 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     * @return a canvas with a line drawn
     */
   def line(x1: Int, y1: Int, x2: Int, y2: Int): Canvas = {
-    val dx = (x1 to x2)
-    val dy = (y1 to y2)
+    val xs = if(x1 < x2) (x1 to x2) else (x2 to x1)
+    val ys = if(y1 < y2) (y1 to y2) else (y2 to y1)
 
-    if (dx.length > 1 && dy.length > 1) {
+    if (xs.length > 1 && ys.length > 1) {
       throw new IllegalArgumentException
     }
 
-    val coords = dx.flatMap(x => dy.map(y => (x,y)))
+    val coords = xs.flatMap(x => ys.map(y => (x,y)))
     coords.foldLeft(this)((canvas, xy) => canvas.fill(xy, Canvas.LINE_CHAR))
   }
 
