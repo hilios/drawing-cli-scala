@@ -1,7 +1,7 @@
 package drawing
 
 /**
-  * A 2D drawing canvas.
+  * A 2D drawing canvas
   * @param width the canvas width
   * @param height the canvas height
   * @param drawing the current canvas drawing
@@ -9,12 +9,12 @@ package drawing
 case class Canvas(width: Int, height: Int, drawing: String) {
 
   /**
-    * Return the given coordinate constrained to the canvas boundaries.
+    * Return the given coordinate constrained to the canvas boundaries
     * @param coord the axes coordinate
     * @param max the boundary
     * @return the sanitized coordinate
     */
-  private def boundaries(coord: Int, max: Int) = {
+  private def constrained(coord: Int, max: Int) = {
     if(coord < 0) 0 else if (coord < width) coord else max - 1
   }
 
@@ -25,14 +25,14 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     * @return the linear index
     */
   private def index(x: Int, y: Int) = {
-    boundaries(x, width) + boundaries(y, height) * width
+    constrained(x, width) + constrained(y, height) * width
   }
 
   /**
     * Returns a optimized for humans version of the drawing.
     * @return the drawing
     */
-  def render: String = {
+  def render = {
     val border = s"+${"-" * width}+"
     val lines = (0 to height - 1)
       .map(i => drawing.substring(i * width, i * width + width))
@@ -134,6 +134,6 @@ object Canvas {
     * @param height the canvas height
     * @return the new canvas
     */
-  def apply(width: Int, height: Int) = new Canvas(width, height,
-    BLANK_CHAR.toString * (width * height))
+  def apply(width: Int, height: Int) =
+    new Canvas(width, height, BLANK_CHAR.toString * (width * height))
 }

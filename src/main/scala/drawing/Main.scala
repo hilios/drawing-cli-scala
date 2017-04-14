@@ -1,10 +1,11 @@
 package drawing
 
+import scala.annotation.tailrec
 import scala.io.StdIn
 import scala.util.{Failure, Success, Try}
 
 /**
-  * The application entrypoint
+  * The application entry point
   */
 object Main extends App {
 
@@ -12,6 +13,7 @@ object Main extends App {
     * Recursively request a command and applies to the canvas
     * @param canvas the current canvas
     */
+  @tailrec
   def run(canvas: Option[Canvas]): Unit = {
     // Render the canvas if there is any
     canvas.foreach(c => println(c.render))
@@ -25,8 +27,8 @@ object Main extends App {
           }
           cmd.draw(canvas)
         } match {
-          case Success(d) =>
-            run(d)
+          case Success(c) =>
+            run(c)
           case Failure(_) =>
             println("Invalid input")
             run(canvas)
