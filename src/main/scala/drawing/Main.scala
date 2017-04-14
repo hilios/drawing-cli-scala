@@ -8,7 +8,6 @@ import scala.util.{Failure, Success, Try}
   */
 object Main extends App {
 
-
   /**
     * Recursively request a command and applies to the canvas
     * @param canvas the current canvas
