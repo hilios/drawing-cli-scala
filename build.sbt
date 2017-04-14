@@ -11,3 +11,5 @@ libraryDependencies ++= Seq(
 logBuffered in Test := false
 
 mainClass := Some("drawing.Main")
+
+assemblyJarName in assembly := "simple-draw.jar"

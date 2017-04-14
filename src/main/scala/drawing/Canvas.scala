@@ -15,7 +15,7 @@ case class Canvas(width: Int, height: Int, drawing: String) {
     * @return the sanitized coordinate
     */
   private def constrained(coord: Int, max: Int) = {
-    if(coord < 0) 0 else if (coord < width) coord else max - 1
+    if(coord < 0) 0 else if (coord < max) coord else max - 1
   }
 
   /**
